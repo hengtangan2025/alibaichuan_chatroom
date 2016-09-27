@@ -1,0 +1,30 @@
+.test-user
+  %h1 选择测试用户
+  %form.form1
+  - @user.each do |user|
+    %input.user-name{:type => "radio", :name => "radiobutton", :id => user.id}= user.name
+
+  %h1 选择用户创建讨论组
+  %form.form2
+  - @user.each do |user|
+    %input.check-box{:type => "checkbox", :id => user.id}= user.name
+  .chatroom
+    请输入讨论组名称：
+    %input.discussion-name
+    %button.create_chatroom 创建讨论组
+
+.private
+  %h1 单聊
+  %h2 选择聊天对象
+  %form.form3
+  - @user.each do |user|
+    %input.user-name{:type => "radio", :name => "radiobutton", :id => user.id}= user.name
+  %input.message-content
+  %button.send-private-message 发送
+.chat-room
+  %button.get-chat-list 获取会话列表
+  %h1 群聊
+  %input.message
+  %button.send-chat-room-message 发送
+
+%button.get-chat-list
