@@ -53,5 +53,8 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-  resources :chat_rooms
+  get "/chat_rooms", to: 'chat_rooms#index'
+  post "/chat_rooms/create_group", to: 'chat_rooms#create_group'
+  post "/chat_rooms/quit_group", to: 'chat_rooms#quit_group'
+  mount PlayAuth::Engine => '/auth', :as => :auth
 end
