@@ -12,17 +12,6 @@ jQuery(document).ready(function(){
       console.log('登录成功', data);
       var chat_room_targetId = "";
       
-      // 获取最近联系人
-      // sdk.Base.getRecentContact({
-      //   count: 10,
-      //   success: function(data){
-      //     console.log('收到消息' ,data);
-      //   },
-      //   error: function(error){
-      //     console.log('get recent contact fail' ,error);
-      //   }
-      // });
-      
       //发送单聊消息
       var private_userid = "";
       jQuery(".private .user-name").click(function(){
@@ -45,10 +34,13 @@ jQuery(document).ready(function(){
 
       var chat_room_name = "";
       var chat_room_member_id = "";
+      var members_array = [];
 
-      //获取创建群聊时邀请的成员
+      //邀请的成员
       jQuery(".chat-room .check-box").click(function(){
         chat_room_member_id = jQuery(this).attr("id");
+        members_array.push(chat_room_member_id);
+        console.log(members_array);
       });
 
       //创建群聊
@@ -61,7 +53,7 @@ jQuery(document).ready(function(){
           data: {
             "create_user": userid,
             "group_name": chat_room_name,
-            "members": chat_room_member_id
+            "members": members_array
           }
         }).success(function(msg){
           console.log(msg);
@@ -84,9 +76,10 @@ jQuery(document).ready(function(){
 
       //发送群消息
       jQuery(".chat-room .send-chat-room-message").click(function(){
+        var message_content = jQuery(".chat-room .message").val();
         sdk.Tribe.sendMsg({
           tid: chat_room_targetId,
-          msg: '你好啊',
+          msg: message_content,
           success: function(data){
             console.log('群发成功',data);
           },
@@ -95,22 +88,6 @@ jQuery(document).ready(function(){
           }
         });
       });
-      
-      // //接收群消息
-      // nextkey = '';
- 
-      // sdk.Tribe.getHistory({
-      //   tid: '5363883',
-      //   count: 10,
-      //   nextkey: nextkey,
-      //   success: function(data){
-      //     console.log('接收群消息', data);
-      //     nextkey = data.data && data.data.next_key;
-      //   },
-      //   error: function(error){
-      //     console.log('get history msg fail', error);
-      //   }
-      // });
 
       //获取群列表
       sdk.Tribe.getTribeList({
@@ -154,13 +131,23 @@ jQuery(document).ready(function(){
 
       //邀请其他用户
       jQuery(".chat-room .invite-others").click(function(){
-
+        jQuery.ajax({
+          url: "/chat_rooms/invite_others",
+          method: "POST",
+          data: {
+            "user": userid,
+            "tribe_id": chat_room_targetId,
+            "members": members_array
+          }
+        }).success(function(msg){
+          console.log(msg);
+        });
       });
 
       // 接收所有消息
       sdk.Base.startListenAllMsg();
 
-      sdk.Event.on('START_RECEIVE_ALL_MSG', function(data){
+      sdk.Event.on('MSG_RECEIVED', function(data){
         console.log("收到消息",data);
       });
     },
@@ -169,8 +156,4 @@ jQuery(document).ready(function(){
      console.log('login fail', error);
     }
   });
-
-  // jQuery(".test-user .login").click(function(){
-    
-  // });
 });

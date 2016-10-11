@@ -56,5 +56,6 @@ Rails.application.routes.draw do
   get "/chat_rooms", to: 'chat_rooms#index'
   post "/chat_rooms/create_group", to: 'chat_rooms#create_group'
   post "/chat_rooms/quit_group", to: 'chat_rooms#quit_group'
+  post "/chat_rooms/invite_others", to: 'chat_rooms#invite_others'
   mount PlayAuth::Engine => '/auth', :as => :auth
 end
