@@ -1,4 +1,4 @@
-.test-user
+.test-user{:app_key => ENV["A_LI_BAI_CHUAN_APP_KEY"], :credential => ENV["CREDENTIAL"]}
   %h2 当前用户
   .current-user{:id => current_user.id}= current_user.name
 .private
@@ -19,7 +19,7 @@
     请输入讨论组名称：
     %input.discussion-name
     %button.create_chatroom 创建讨论组
-  %button.get-chat-room-list 获取讨论组列表
+  %h2 讨论组列表
   %form.chat-room-list
   .chat-room-operations
     %button.quit-chat-room 退出讨论组

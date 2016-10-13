@@ -21,24 +21,24 @@ class ChatRoomsController < ApplicationController
   def create_group
     members_str = ""
     params[:members].each do |member|
-      members_str += '{uid:"' + member + '", taobao_account:"false", app_key:"23459018"}'
+      members_str += '{uid:"' + member + '", taobao_account:"false", app_key:' + ENV["A_LI_BAI_CHUAN_APP_KEY"] + '}'
     end 
     members_array = '[' + members_str + ']'
     hash = {
       method: 'taobao.openim.tribe.create',
-      app_key: '23459018',
+      app_key: ENV["A_LI_BAI_CHUAN_APP_KEY"],
       timestamp: Time.now.strftime("%F %T"),
       format: 'json',
       v: '2.0',
       sign_method: 'md5',
-      user: '{uid:"' + params[:create_user] + '", taobao_account:"false", app_key:"23459018"}',
+      user: '{uid:"' + params[:create_user] + '", taobao_account:"false", app_key:' + ENV["A_LI_BAI_CHUAN_APP_KEY"] + '}',
       tribe_name: params[:group_name],
       notice: 'success',
       tribe_type: '1',
       members: members_array
     }
 
-    hash[:sign] = make_sign_str(hash, '21052185adfbdae2b6e7bf4896c96d15')
+    hash[:sign] = make_sign_str(hash, ENV["A_LI_BAI_CHUAN_APP_SECRET"])
 
     url = URI.parse("http://gw.api.taobao.com/router/rest")
     Net::HTTP.start(url.host, url.port) do |http|
@@ -48,7 +48,7 @@ class ChatRoomsController < ApplicationController
       req.set_form_data(hash)
       p http.request(req).body
       if http.request(req).body["error_response"].nil?
-        render :json => {:result => "创建成功"}.to_json
+        render :json => {:result => "创建成功",:tid => http.request(req).body["openim_tribe_create_response"]["tribe_id"]}.to_json
       else
         render :json => {:result => "创建失败"}.to_json
       end
@@ -58,16 +58,16 @@ class ChatRoomsController < ApplicationController
   def quit_group
     hash = {
       method: 'taobao.openim.tribe.quit',
-      app_key: '23459018',
+      app_key: ENV["A_LI_BAI_CHUAN_APP_KEY"],
       timestamp: Time.now.strftime("%F %T"),
       format: 'json',
       v: '2.0',
       sign_method: 'md5',
-      user: '{uid:"' + params[:quit_user] + '", taobao_account:"false", app_key:"23459018"}',
+      user: '{uid:"' + params[:quit_user] + '", taobao_account:"false", app_key:' + ENV["A_LI_BAI_CHUAN_APP_KEY"] + '}',
       tribe_id: params[:tribe_id]
     }
 
-    hash[:sign] = make_sign_str(hash, '21052185adfbdae2b6e7bf4896c96d15')
+    hash[:sign] = make_sign_str(hash, ENV["A_LI_BAI_CHUAN_APP_SECRET"])
 
     url = URI.parse("http://gw.api.taobao.com/router/rest")
     Net::HTTP.start(url.host, url.port) do |http|
@@ -87,22 +87,22 @@ class ChatRoomsController < ApplicationController
   def invite_others
     members_str = ""
     params[:members].each do |member|
-      members_str += '{uid:"' + member + '", taobao_account:"false", app_key:"23459018"}'
+      members_str += '{uid:"' + member + '", taobao_account:"false", app_key:' + ENV["A_LI_BAI_CHUAN_APP_KEY"] + '}'
     end 
     members_array = '[' + members_str + ']'
     hash = {
       method: 'taobao.openim.tribe.invite',
-      app_key: '23459018',
+      app_key: ENV["A_LI_BAI_CHUAN_APP_KEY"],
       timestamp: Time.now.strftime("%F %T"),
       format: 'json',
       v: '2.0',
       sign_method: 'md5',
-      user: '{uid:"' + params[:user] + '", taobao_account:"false", app_key:"23459018"}',
+      user: '{uid:"' + params[:user] + '", taobao_account:"false", app_key:' + ENV["A_LI_BAI_CHUAN_APP_KEY"] + '}',
       tribe_id: params[:tribe_id],
       members: members_array
     }
 
-    hash[:sign] = make_sign_str(hash, '21052185adfbdae2b6e7bf4896c96d15')
+    hash[:sign] = make_sign_str(hash, ENV["A_LI_BAI_CHUAN_APP_SECRET"])
 
     url = URI.parse("http://gw.api.taobao.com/router/rest")
     Net::HTTP.start(url.host, url.port) do |http|

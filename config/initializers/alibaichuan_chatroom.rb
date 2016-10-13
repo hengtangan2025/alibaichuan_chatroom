@@ -15,15 +15,15 @@ PlayAuth::User.class_eval do |variable|
   def add_im_user
     params = {
       method: 'taobao.openim.users.add',
-      app_key: '23459018',
+      app_key: ENV["A_LI_BAI_CHUAN_APP_KEY"],
       timestamp: Time.now.strftime("%F %T"),
       format: 'json',
       v: '2.0',
       sign_method: 'md5',
-      userinfos: '{userid:"' + self.id + '", password:"12545"}',
+      userinfos: '{userid:"' + self.id + '", password:' + ENV["CREDENTIAL"] + '}',
     }
 
-    params[:sign] = make_sign_str(params, '21052185adfbdae2b6e7bf4896c96d15')
+    params[:sign] = make_sign_str(params, ENV["A_LI_BAI_CHUAN_APP_SECRET"])
 
     url = URI.parse("http://gw.api.taobao.com/router/rest")
 
@@ -32,6 +32,7 @@ PlayAuth::User.class_eval do |variable|
       req['Content-Type'] = 'multipart/form-data'
       req['charset'] = 'utf-8'
       req.set_form_data(params)
+      p http.request(req).body
     end
   end
 end

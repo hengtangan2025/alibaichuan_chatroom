@@ -1,12 +1,14 @@
 jQuery(document).ready(function(){
   var sdk = new WSDK();
   var userid = jQuery(".test-user .current-user").attr("id");
+  var app_key = jQuery(".test-user").attr("app_key");
+  var secret = jQuery(".test-user").attr("credential");
   console.log(userid);
 
   sdk.Base.login({
     uid: userid,
-    appkey: '23459018',
-    credential: '12545',
+    appkey: app_key,
+    credential: secret,
     timeout: 4000,
     success: function(data){
       console.log('登录成功', data);
@@ -55,7 +57,8 @@ jQuery(document).ready(function(){
             "group_name": chat_room_name,
             "members": members_array
           }
-        }).success(function(msg){
+        })
+        .success(function(msg){
           console.log(msg);
         }); 
       });
