@@ -1,12 +1,12 @@
 访问地址：
 
-ali.im.teamkn.com/chat_rooms
+http://ali.im.teamkn.com/chat_rooms
 
 演示说明：
 
 访问演示页面
 
-ali.im.teamkn.com/chat_rooms
+http://ali.im.teamkn.com/chat_rooms
 如果 session 没有找到已登录用户，跳转到：
 
 http://ali.im.teamkn.com/auth/users/developers
