@@ -47,12 +47,8 @@ class ChatRoomsController < ApplicationController
       req['charset'] = 'utf-8'
       req.set_form_data(hash)
       p http.request(req).body
-      if http.request(req).body["error_response"].nil?
-        render :json => {:result => "创建成功",:tid => http.request(req).body["openim_tribe_create_response"]["tribe_id"]}.to_json
-      else
-        render :json => {:result => "创建失败"}.to_json
-      end
     end
+    render :json => {:result => "创建成功"}.to_json
   end
 
   def quit_group

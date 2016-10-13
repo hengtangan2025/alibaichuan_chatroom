@@ -42,11 +42,10 @@ jQuery(document).ready(function(){
       jQuery(".chat-room .check-box").click(function(){
         chat_room_member_id = jQuery(this).attr("id");
         members_array.push(chat_room_member_id);
-        console.log(members_array);
       });
 
       //创建群聊
-      jQuery(".chat-room .create_chatroom").click(function(){
+      jQuery(".chat-room .chatroom .create_chatroom").click(function(){
          //获取群聊名称
         chat_room_name = jQuery(".chat-room .discussion-name").val();
         jQuery.ajax({
